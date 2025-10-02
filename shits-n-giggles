@@ -1,0 +1,74 @@
+import os
+import sys
+
+def calculate():
+    equation = input("")
+    if equation.strip().lower() == 'end':
+        return 'end'
+    
+    parts = equation.split()
+    
+    
+    if len(parts) == 5:
+        x, op, y, op2, z = parts
+        x, y, z = float(x), float(y), float(z)
+        if op == '+':
+            if op2 == '+': result = x + y + z
+            if op2 == '-': result = x + y - z
+            if op2 == '*': result = x + (y * z)
+            if op2 == '/': result = x + (y / z)
+        elif op == '-':
+            if op2 == '+': result = x - y + z
+            if op2 == '-': result = x - y - z
+            if op2 == '*': result = x - (y * z)
+            if op2 == '/': result = x - (y / z)
+        elif op == '*':
+            if op2 == '+': result = x * y + z
+            if op2 == '-': result = x * y - z
+            if op2 == '*': result = x * y * z
+            if op2 == '/': result = x * y / z
+        elif op == '/':
+            if op2 == '+': result = x / y + z
+            if op2 == '-': result = x / y - z
+            if op2 == '*': result = x / y * z
+            if op2 == '/': result = x / y / z
+        elif op == '^':
+            if op2 == '+': result = (x ** y) + z
+            if op2 == '-': result = (x ** y) - z
+            if op2 == '*': result = (x ** y) * z
+            if op2 == '/': result = (x ** y) / z
+        else: result = "ERROR: An operator seems to be unsupported"
+        lastLine()
+        print(fmt(x), op, fmt(y), op2, fmt(z), "=", fmt(result))
+    elif len(parts) == 3:
+        x, op, y = parts
+        x, y = float(x), float(y)
+        if op == '+': result = x + y
+        elif op == '-': result = x - y
+        elif op == '*': result = x * y
+        elif op == '/': result = x / y
+        elif op == '^': result = x ** y
+        else: result = "ERROR: Unknown operator"
+        lastLine()
+        print(fmt(x), op, fmt(y), "=", fmt(result))
+    else: 
+        result = "ERROR: Invalid input"
+        lastLine()
+        print(result)
+        
+def lastLine():
+    sys.stdout.write("\033[F")
+    sys.stdout.write("\033[K")
+def clear():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')  
+def fmt(num):
+    return int(num) if isinstance(num, float) and num.is_integer() else num   
+end = 0
+clear()
+print("\n\n\n----Calculator----\n* Please enter in the format of 'x * y * z', including spaces.\n* Type 'end' to terminate the process.\n")
+while True: 
+    if calculate() == 'end':
+        break
