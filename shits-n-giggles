@@ -1,12 +1,13 @@
 import os
 import sys
+import re
 
 def calculate():
     equation = input("")
     if equation.strip().lower() == 'end':
         return 'end'
     
-    parts = equation.split()
+    parts = re.findall(r'\d+\.?\d*|[+\-*/^]', equation)
     
     
     if len(parts) == 5:
@@ -17,26 +18,31 @@ def calculate():
             if op2 == '-': result = x + y - z
             if op2 == '*': result = x + (y * z)
             if op2 == '/': result = x + (y / z)
+            if op2 == '^': result = x + (y ** z)
         elif op == '-':
             if op2 == '+': result = x - y + z
             if op2 == '-': result = x - y - z
             if op2 == '*': result = x - (y * z)
             if op2 == '/': result = x - (y / z)
+            if op2 == '^': result = x - (y ** z)
         elif op == '*':
             if op2 == '+': result = x * y + z
             if op2 == '-': result = x * y - z
             if op2 == '*': result = x * y * z
             if op2 == '/': result = x * y / z
+            if op2 == '^': result = x * (y ** z)
         elif op == '/':
             if op2 == '+': result = x / y + z
             if op2 == '-': result = x / y - z
             if op2 == '*': result = x / y * z
             if op2 == '/': result = x / y / z
+            if op2 == '^': result = x / (y ** z)
         elif op == '^':
             if op2 == '+': result = (x ** y) + z
             if op2 == '-': result = (x ** y) - z
             if op2 == '*': result = (x ** y) * z
             if op2 == '/': result = (x ** y) / z
+            if op2 == '^': result = (x ** y) ** z
         else: result = "ERROR: An operator seems to be unsupported"
         lastLine()
         print(fmt(x), op, fmt(y), op2, fmt(z), "=", fmt(result))
@@ -68,7 +74,7 @@ def fmt(num):
     return int(num) if isinstance(num, float) and num.is_integer() else num   
 end = 0
 clear()
-print("\n\n\n----Calculator----\n* Please enter in the format of 'x * y * z', including spaces.\n* Type 'end' to terminate the process.\n")
+print("----Calculator----\n* Please enter your equation, without using letters (ie; +, -, *, /, ^).\n* Please don't use parentheses, ie; ()\n* Type 'end' to terminate the process.\n")
 while True: 
     if calculate() == 'end':
         break
