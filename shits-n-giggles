@@ -2,15 +2,62 @@ import os
 import sys
 import re
 
+
+
 def calculate():
     equation = input("")
     if equation.strip().lower() == 'end':
         return 'end'
+    if equation.strip().lower() == 'c':
+        return 'clear'
     
-    parts = re.findall(r'\d+\.?\d*|[+\-*/^]', equation)
+    parts = re.findall(r'\d+\.?\d*|[+\-*/^()]', equation)
     
-    
-    if len(parts) == 5:
+    if '(' and ')' in parts:
+        if len(parts) == 7:
+            leftIndex = parts.index('(')
+            rightIndex = parts.index(')')
+            if leftIndex == 0 and rightIndex == 4:
+                par1, x, op, y, par2, op2, z = parts
+                x,y,z = float(x),float(y),float(z)
+                if op == '+':
+                    if op2 == '+': result = (x + y) + z
+                    if op2 == '-': result = (x + y) - z
+                    if op2 == '*': result = (x + y) * z
+                    if op2 == '/': result = (x + y) / z
+                    if op2 == '^': result = (x + y) ** z
+                elif op == '-':
+                    if op2 == '+': result = (x - y) + z
+                    if op2 == '-': result = (x - y) - z
+                    if op2 == '*': result = (x - y) * z
+                    if op2 == '/': result = (x - y) / z
+                    if op2 == '^': result = (x - y) ** z
+                elif op == '*':
+                    if op2 == '+': result = (x * y) + z
+                    if op2 == '-': result = (x * y) - z
+                    if op2 == '*': result = (x * y) * z
+                    if op2 == '/': result = (x * y) / z
+                    if op2 == '^': result = (x * y) ** z
+                elif op == '/':
+                    if op2 == '+': result = (x / y) + z
+                    if op2 == '-': result = (x / y) - z
+                    if op2 == '*': result = (x / y) * z
+                    if op2 == '/': result = (x / y) / z
+                    if op2 == '^': result = (x / y) ** z
+                elif op == '^':
+                    if op2 == '+': result = (x ** y) + z
+                    if op2 == '-': result = (x ** y) - z
+                    if op2 == '*': result = (x ** y) * z
+                    if op2 == '/': result = (x ** y) / z
+                    if op2 == '^': result = (x ** y) ** z
+                else: result = "ERROR: An operator seems to be unsupported"   
+                lastLine()
+                print("(" + str(fmt(x)) + " " + op + " " + str(fmt(y)) + ")" + " " + op2 + " " + str(fmt(z)) + " = " + str(fmt(result))) 
+            elif leftIndex == 3 and rightIndex == 6:
+                print("Under Dev")
+        elif len(parts) == 5:
+            print("Under Dev")
+    elif len(parts) == 5:
         x, op, y, op2, z = parts
         x, y, z = float(x), float(y), float(z)
         if op == '+':
@@ -62,6 +109,7 @@ def calculate():
         lastLine()
         print(result)
         
+
 def lastLine():
     sys.stdout.write("\033[F")
     sys.stdout.write("\033[K")
@@ -74,7 +122,11 @@ def fmt(num):
     return int(num) if isinstance(num, float) and num.is_integer() else num   
 end = 0
 clear()
-print("----Calculator----\n* Please enter your equation, without using letters (ie; +, -, *, /, ^).\n* Please don't use parentheses, ie; ()\n* Type 'end' to terminate the process.\n")
+print("----Calculator----\n* Please enter your equation, without using letters (ie; +, -, *, /, ^).\n* Please don't use parentheses, ie; ()\n* Type 'end' to terminate the process, and type 'c' to clear.\n")
 while True: 
-    if calculate() == 'end':
+    ai = calculate()
+    if ai == 'end':
         break
+    elif ai == 'clear':
+        clear()
+        print("----Calculator----\n* Please enter your equation, without using letters (ie; +, -, *, /, ^).\n* Please don't use parentheses, ie; ()\n* Type 'end' to terminate the process, and type 'c' to clear.\n")
